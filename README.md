@@ -81,9 +81,11 @@ Upon executing this file, you should see the messages from the topic displayed i
 
 # Testing SurfSender
 
+---TestCase #1: Invalid URLs---
+
 Given the nature of the program, one of the important areas we should test is our data source. In the event that a webpage in our URL list goes down or the formatting of the contents we are scraping changes, we need to be able that our script is still able to execute in it's entirety, despite such a mishap with our data source.
 
-In the test directory, I've updated the 'producer_surf_info.py' file to include an invalid URL ( changed 'https://magicseaweed.com/Scituate-Surf-Report/372/' to ''https://magicseaweed.com/Scituate-Su1234rf-Report/372/'. If you were to load ''https://magicseaweed.com/Scituate-Su1234rf-Report/372/' in a web browser, you will receive a 404: page not found error.
+In the test directory named 'surfsender_testcase1', I've updated the 'producer_surf_info.py' file to include an invalid URL ( changed 'https://magicseaweed.com/Scituate-Surf-Report/372/' to ''https://magicseaweed.com/Scituate-Su1234rf-Report/372/'. If you were to load ''https://magicseaweed.com/Scituate-Su1234rf-Report/372/' in a web browser, you will receive a 404: page not found error.
 
 Due to the function containing our web scraping logic being wrapped with try/except clauses, we see that the script is still able to run until completion, but the data for this message is displayed as:
 
@@ -91,6 +93,26 @@ Due to the function containing our web scraping logic being wrapped with try/exc
 >>Scituate Wave Height: No Data Available
 ```
 Although we aren't able to get any data, the script is still able to be executed without any fatal errors that result in the script crashing, which is what we want.
+
+
+---TestCase #2: Alter message when current wave height is 'flat'---
+
+At times, the URLs in our list will contain a value of 'flat' instead of an integer for the wave height value. We want to ensure that when such occurances happen, our data doesn't read as 'flat ft', as part of our scraping logic appends the 'ft' substring to the wave height integer value (ie '4 ft'). Having a message contain 'flat ft' looks ugly, we want it to just read 'flat', as that's how we'd describe the conditions in real life.
+
+In the test directory named 'surfsender_testcase2', I've updated the 'producer_surf_info.py' file to NOT scrape actual wave height values from the URLs. Instead, I've hard coded all of the wave height values to 'flat', in order to simulate the instances when the URLs would contain 'flat' as the current wave height.
+
+Upon executing the updated producer file & then the consumer file, we see that the values read as follows:
+
+```
+Nahant Wave Height: flat 
+Nantasket Wave Height: flat 
+Scituate Wave Height: flat 
+Seabrook Wave Height: flat 
+Rye Wave Height: flat 
+Salisbury Wave Height: flat 
+```
+
+This is the outcome we expected for such a scenario.
 
 # Author
 This software package was created by Mike Kramer. For any questions/feedback/collaboration inquiries, please send emails mkramer789@gmail.com
