@@ -90,6 +90,6 @@ if __name__ == '__main__':
     if len(surf_forecasts) > 0:
         kafka_producer = connect_kafka_producer()
         for i in surf_forecasts:
-            publish_message(kafka_producer, 'surf_data_topic818', 'raw', i.strip())
+            publish_message(kafka_producer, 'surf_data_topic41', 'raw', i.strip())
         if kafka_producer is not None:
             kafka_producer.close()
